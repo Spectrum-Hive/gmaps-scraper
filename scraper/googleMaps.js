@@ -208,6 +208,14 @@ async function runGoogleMapsScrape(job, params) {
           scrapedAt: new Date().toISOString(),
         };
 
+        if (record.website) {
+          const norm = record.website.toLowerCase().replace(/\/+$/, '');
+          const dup = job.results.some(
+            (r) => r.website && r.website.toLowerCase().replace(/\/+$/, '') === norm
+          );
+          if (dup) continue;
+        }
+
         job.results.push(record);
         job.scraped = job.results.length;
       } catch (err) {

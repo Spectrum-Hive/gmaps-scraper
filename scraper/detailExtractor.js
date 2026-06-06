@@ -29,6 +29,7 @@ function normalizeWebsiteUrl(href) {
   try {
     const final = new URL(u);
     if (!/^https?:$/i.test(final.protocol)) return null;
+    if (/support\.google\.com|business\.google\.com/i.test(final.hostname)) return null;
     ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].forEach(
       (k) => final.searchParams.delete(k)
     );
@@ -173,7 +174,7 @@ function scrapePanelInPage() {
     const raw = unwrapHref(href);
     if (!raw || !raw.startsWith('http')) return null;
     const bad =
-      /google\.com\/maps|maps\.google\.|gstatic\.com|googleusercontent\.com|schema\.org|\/search\?/i.test(
+      /google\.com\/maps|maps\.google\.|support\.google\.com|business\.google\.com|gstatic\.com|googleusercontent\.com|schema\.org|\/search\?/i.test(
         raw
       );
     if (bad) return null;
